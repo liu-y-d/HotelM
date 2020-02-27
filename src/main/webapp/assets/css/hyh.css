@@ -1,0 +1,23 @@
+.row{/*主页面栅格系统样式*/
+    width: 100%;
+    text-align: center;
+
+}
+.houseInfo{
+
+    margin: 20px;
+    border: solid black 1px;
+
+}
+.houseInfo span{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: block;
+}
+.houseInfo img{
+    background-color: #4cae4c;
+}
+.upload{
+    margin: 0 auto;
+    text-align: center;
+}

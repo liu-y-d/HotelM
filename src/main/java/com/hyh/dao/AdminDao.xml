@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hyh.dao.AdminDao">
+	<!--登录判断-->
+    <select id="Login" resultType="com.hyh.pojo.AdminInfo" parameterType="com.hyh.pojo.AdminInfo">
+		select * from AdminInfo where adminName = #{adminName} and adminName = #{adminName}
+	</select>
+	<!--查看房型信息-->
+	<select id="selectHouseInfo" resultType="com.hyh.pojo.HotelInfo">
+		select  * from hotelInfo
+	</select>
+	<!--添加房型信息-->
+	<insert id="insertHotelInfo" parameterType="com.hyh.pojo.HotelInfo">
+		insert into hotelInfo values (null ,#{houseName},#{houseNum},#{housePrice},#{houseImg})
+	</insert>
+	<!--根据id进行查找-->
+	<select id="queryById" parameterType="Integer" resultType="com.hyh.pojo.HotelInfo">
+		select * from hotelInfo where houseTypeId = #{houseTypeId}
+	</select>
+	<!--修改户型信息-->
+	<update id="editHouseInfo" parameterType="com.hyh.pojo.HotelInfo">
+		update hotelInfo set houseName = #{houseName},houseNum = #{houseNum}, housePrice = #{housePrice} ,houseImg = #{houseImg} where houseTypeId = #{houseTypeId}
+	</update>
+	<!--根据id删除户型信息-->
+	<delete id="delHouseInfo" parameterType="Integer">
+		delete from hotelInfo where houseTypeId = #{houseTypeId}
+	</delete>
+	<!--添加预定信息-->
+	<insert id="addCustomerReservationInfo" parameterType="com.hyh.pojo.CustomerReservationInfo">
+		insert into customerreservationinfo values (#{cusName},#{cusTel},#{houseTypeId},#{reserHouseNumber},#{inTime},#{outTime},#{scheduledTime})
+	</insert>
+	<!--查找房间剩余数量-->
+	<select id="queryHouseNumById" parameterType="Integer" resultType="Integer">
+		select houseNum from hotelInfo where houseTypeId = #{houseTypeId}
+	</select>
+	<!--更新房间剩余数量-->
+	<update id="updateHotelInfoHotelNum" parameterType="com.hyh.pojo.HotelInfo">
+		update hotelInfo set houseNum = #{houseNum} where houseTypeId = #{houseTypeId}
+	</update>
+	<!--根据客户电话查询预定信息-->
+	<select id="queryByCusTel" parameterType="String" resultType="com.hyh.pojo.CustomerReservationInfo">
+		select * from customerreservationinfo where cusTel = #{cusTel}
+	</select>
+	<!--查找预定信息-->
+	<select id="queryCustomerReservationInfo" resultType="com.hyh.pojo.CustomerReservationInfo">
+		select customerreservationinfo.cusName,customerreservationinfo.cusTel,customerreservationinfo.houseTypeId,customerreservationinfo.reserHouseNumber,hotelInfo.houseName from customerreservationinfo join hotelInfo on customerreservationinfo.houseTypeId = hotelInfo.houseTypeId
+	</select>
+	<!--删除预订信息-->
+	<delete id="deleteCustomerReservationInfoByTel">
+		delete from customerreservationinfo  where cusTel = #{cusTel}
+	</delete>
+
+	<!--统计每月预订人数-->
+	<select id="peopleStatistics" resultType="com.hyh.pojo.SalesStatistics">
+		SELECT COUNT(1) AS number,inTime from customerreservationinfo GROUP BY inTime
+	</select>
+	<!--统计财务-->
+	<select id="financeStatistics" resultType="com.hyh.pojo.FinanceStatistics">
+			SELECT SUM(cusMoney)as money,time FROM financeinfo GROUP BY time
+	</select>
+	<!--记入总账-->
+	<insert id="insertFinanceInfo" parameterType="com.hyh.pojo.FinanceInfo">
+		insert into financeinfo values (null ,#{cusTel},#{cusMoney},#{time})
+	</insert>
+	<!--从总账中删除-->
+	<delete id="deleteFinanceInfo">
+		DELETE FROM FinanceInfo WHERE cusTel = #{cusTel} and time =#{time }
+	</delete>
+</mapper>
