@@ -43,7 +43,7 @@
 	</select>
 	<!--查找预定信息-->
 	<select id="queryCustomerReservationInfo" resultType="com.hyh.pojo.CustomerReservationInfo">
-		select customerreservationinfo.cusName,customerreservationinfo.cusTel,customerreservationinfo.houseTypeId,customerreservationinfo.reserHouseNumber,hotelInfo.houseName from customerreservationinfo join hotelInfo on customerreservationinfo.houseTypeId = hotelInfo.houseTypeId
+		select customerreservationinfo.cusName,customerreservationinfo.cusTel,customerreservationinfo.houseTypeId,customerreservationinfo.reserHouseNumber,hotelInfo.houseName,customerreservationinfo.inTime,customerreservationinfo.outTime from customerreservationinfo join hotelInfo on customerreservationinfo.houseTypeId = hotelInfo.houseTypeId
 	</select>
 	<!--删除预订信息-->
 	<delete id="deleteCustomerReservationInfoByTel">

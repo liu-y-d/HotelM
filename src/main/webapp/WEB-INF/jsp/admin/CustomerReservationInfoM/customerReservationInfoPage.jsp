@@ -40,6 +40,8 @@
 				<span>房型编号：${cusReserInfo.houseTypeId}</span>
 				<span>房型名称：${cusReserInfo.houseName}</span>
 				<span>预定数量：${cusReserInfo.reserHouseNumber}</span>
+				<span>入住时间：${cusReserInfo.inTime}</span>
+				<span>离店时间：${cusReserInfo.outTime}</span>
 			</div>
 		</div>
 	</c:forEach>
