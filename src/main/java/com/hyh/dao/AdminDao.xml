@@ -3,7 +3,7 @@
 <mapper namespace="com.hyh.dao.AdminDao">
 	<!--登录判断-->
     <select id="Login" resultType="com.hyh.pojo.AdminInfo" parameterType="com.hyh.pojo.AdminInfo">
-		select * from AdminInfo where adminName = #{adminName} and adminName = #{adminName}
+		select * from AdminInfo where adminName = #{adminName} and adminPwd = #{adminPwd}
 	</select>
 	<!--查看房型信息-->
 	<select id="selectHouseInfo" resultType="com.hyh.pojo.HotelInfo">
@@ -66,4 +66,8 @@
 	<delete id="deleteFinanceInfo">
 		DELETE FROM FinanceInfo WHERE cusTel = #{cusTel} and time =#{time }
 	</delete>
+	<!--更新管理员密码-->
+	<update id="updateAdminPwd">
+		update adminInfo set adminPwd = #{adminPwd} where adminId = #{adminId}
+	</update>
 </mapper>

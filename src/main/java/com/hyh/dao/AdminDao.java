@@ -48,4 +48,6 @@ public interface AdminDao {
     void insertFinanceInfo(@Param("cusTel") String cusTel,@Param("cusMoney") Double cusMoney,@Param("time") String time);
     //从总账中删除
     int deleteFinanceInfo(@Param("cusTel")String cusTel,@Param("time")String time);
+    //更新用户密码
+    int updateAdminPwd(@Param("adminId")Integer adminId,@Param("adminPwd")String adminPwd);
 }

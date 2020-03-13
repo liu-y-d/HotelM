@@ -264,4 +264,23 @@ public class AdminController {
 			return JSON.toJSONString(msg);
 		}
 	}
+
+	/**
+	 * 获取用户信息
+	 * @param request
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/getAdminInfo")
+	public String getAdminInfo(HttpServletRequest request,Model model){
+		AdminInfo adminInfo = (AdminInfo) request.getSession().getAttribute("adminInfo");
+		model.addAttribute("adminInfo",adminInfo);
+		return "admin/AdminInfo";
+	}
+	@ResponseBody
+	@RequestMapping(value = "/updateAdminPwd", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+	public String updateAdminPwd(Integer adminId,String adminPwd){
+		int i = adminDao.updateAdminPwd(adminId, adminPwd);
+		return JSON.toJSONString("更新成功,请退出当前用户并重新登录！");
+	}
 }

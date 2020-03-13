@@ -32,7 +32,7 @@
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">设置 <span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a href="#">个人信息</a></li>
+						<li><a href="/admin/getAdminInfo">个人信息</a></li>
 
 						<li role="separator" class="divider"></li>
 						<li><a href="/admin/signOut">退出登录</a></li>
@@ -90,8 +90,7 @@
 </div>
 <footer style="text-align: center;background-color: #5a84fd" >
 
-	<p>2019 百家号</p>
-	<p>Posted by: 编程的乐趣百家号</p>
+	<p>作者：滑燕河</p>
 </footer>
 
 <!-- 模态框（Modal）查询预定信息显示模态框 -->

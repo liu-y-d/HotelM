@@ -1,86 +1,88 @@
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+	<title>主页面</title>
 	<link rel="stylesheet" type="text/css" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
-	<link rel="stylesheet" type="text/css" href="/assets/css/hyh.css">
 </head>
 <body>
 <nav class="navbar navbar-default">
 	<div class="container-fluid">
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">
-			<a class="navbar-brand" href="/admin/reservationPage">${hotelName}</a>
+			<a class="navbar-brand" href="/admin/toMain">测试酒店管理系统</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li><a href="/admin/toHouseInfoMInReservationPage">查看房型信息</a></li>
+				<li><a href="/admin/toHouseInfoM">房型信息管理</a></li>
+				<li><a href="/admin/queryCustomerReservationInfo">预定信息管理</a></li>
+				<li><a href="/SalesStatistics">销量统计</a></li>
+				<li><a href="/FinanceStatistics">财务统计</a></li>
 			</ul>
-			<form class="navbar-form navbar-left" action="">
+			<form class="navbar-form navbar-left">
 				<div class="form-group">
-					<input type="text" name="cusTel" class="form-control" id="cusTel" placeholder="请输入客户电话">
+					<input type="text" class="form-control" id="cusTel" placeholder="请输入客户电话">
 				</div>
-				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#queryByCusTel" onclick="queryReservation()">查询预定信息</button>
+				<button type="button" id="checkNull" class="btn btn-default" data-toggle="modal" data-target="#queryByCusTel" onclick="queryReservation()">查询预定信息</button>
 			</form>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#">${adminInfo.adminName}</a></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">设置 <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="/admin/getAdminInfo">个人信息</a></li>
+
+						<li role="separator" class="divider"></li>
+						<li><a href="/admin/signOut">退出登录</a></li>
+					</ul>
+				</li>
+			</ul>
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
 </nav>
 
 <div class="jumbotron" style="background-color: #5a84fd;text-align: center;margin-bottom: 0px;">
-
-	<h1>测试酒店</h1>
-	<p>啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</p>
+	管理员编号：<p id="adminId">${adminInfo.adminId}</p>
+	管理员名称：<p >${adminInfo.adminName}</p>
+	管理员原密码：<p id="oldPwd">${adminInfo.adminPwd}</p><br>
+	管理员密码：<input type="password" name="adminPwd" id="adminPwd">
+	<input type="button" value="更改密码" onclick="updateAdminPwd()">
 </div>
+<script>
+	function updateAdminPwd() {
+		var oldPwd = $("#oldPwd").text();
+		var adminId = $("#adminId").text();
+		var adminPwd = $("#adminPwd").val();
+		if (oldPwd==adminPwd){
+			alert("新密码不能与原密码重复！");
+			return false;
+		}else {
+			$.ajax({
+				type: "POST",
+				url:"/admin/updateAdminPwd",
+				data:{
+					adminId:adminId,
+					adminPwd:adminPwd
+				},
+				dataType:"JSON",
+				success:function (data) {
+					alert(data);
+				}
+			});
+		}
 
-<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-	<!-- Indicators -->
-	<ol class="carousel-indicators">
-		<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-		<li data-target="#carousel-example-generic" data-slide-to="1"></li>
-		<li data-target="#carousel-example-generic" data-slide-to="2"></li>
-	</ol>
-
-	<!-- Wrapper for slides -->
-	<div class="carousel-inner" role="listbox">
-		<div class="item active" style="text-align: center">
-			<img src="/assets/images/1.jpg" alt="..." style="display: inline-block">
-			<div class="carousel-caption">
-				...
-			</div>
-		</div>
-		<div class="item" style="text-align: center">
-			<img src="/assets/images/2.jpg" alt="..." style="display: inline-block">
-			<div class="carousel-caption">
-				...
-			</div>
-		</div>
-		<div class="item" style="text-align: center">
-			<img src="/assets/images/3.jpg" alt="..." style="display: inline-block">
-			<div class="carousel-caption">
-				...
-			</div>
-		</div>
-	</div>
-
-	<!-- Controls -->
-	<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-		<span class="sr-only">Previous</span>
-	</a>
-	<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-		<span class="sr-only">Next</span>
-	</a>
-</div>
+	}
+</script>
 <footer style="text-align: center;background-color: #5a84fd" >
+
 	<p>作者：滑燕河</p>
 </footer>
 
-
-<!-- 模态框（Modal）查询信息显示模态框 -->
+<!-- 模态框（Modal）查询预定信息显示模态框 -->
 <div class="modal fade" id="queryByCusTel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
+     aria-hidden="hiden">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -97,11 +99,7 @@
 					客户电话：<input type="text" id="cusTelPhone"/><br/>
 					客户名称：<input type="text" id="cusName"/><br/>
 					预定数量：<input type="text" id="reserHouseNumber"/><br/>
-					入住时间：<input type="text" id="inTime"/><br/>
-					离店时间：<input type="text" id="outTime"/><br/>
-
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="关闭"/>
-					<input type="button" class="btn btn-default" data-dismiss="modal" id="Unsubscribe" onclick="Unsubscribe()" value="退订"/>
 				</div>
 			</div>
 		</div><!-- /.modal-content -->
@@ -125,17 +123,12 @@
                 var cusTel = data.cusTel;
                 var cusName = data.cusName;
                 var reserHouseNumber = data.reserHouseNumber;
-                var inTime = data.inTime;
-                var outTime = data.outTime;
                 if (!data){
                     $("#houseTypeId").val('无信息');
                     $("#houseName").val('无信息');
                     $("#cusTelPhone").val('无信息');
                     $("#cusName").val('无信息');
                     $("#reserHouseNumber").val('无信息');
-                    $("#inTime").val('无信息');
-                    $("#outTime").val('无信息');
-                    $("#Unsubscribe").css({"display":"none"});
 
                 }else {
                     $("#houseTypeId").val(houseTypeId);
@@ -143,28 +136,11 @@
                     $("#cusTelPhone").val(cusTel);
                     $("#cusName").val(cusName);
                     $("#reserHouseNumber").val(reserHouseNumber);
-                    $("#inTime").val(inTime);
-                    $("#outTime").val(outTime);
-					$("#Unsubscribe").css({"display":"inline"});
-
-				}
+                }
             }
         });
     }
-    // 退订函数
-	function Unsubscribe() {
-		var cusTel = $("#cusTel").val();
-		if (!cusTel){
-			cusTel = 1;
-		}
-		$.ajax({
-			type: "GET",
-			url: "/admin/Unsubscribe/" + cusTel,
-			success:function (data) {
-				alert(data)
-			}
-		});
-	}
 </script>
+
 </body>
 </html>
