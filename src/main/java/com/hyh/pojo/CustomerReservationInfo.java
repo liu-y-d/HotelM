@@ -17,30 +17,7 @@ public class CustomerReservationInfo {
     private String inTime;//入住日期
     private String outTime;//退房日期
     private Date scheduledTime;//预定时间
-
-    public Date getScheduledTime() {
-        return scheduledTime;
-    }
-
-    public void setScheduledTime(Date scheduledTime) {
-        this.scheduledTime = scheduledTime;
-    }
-
-    public String getInTime() {
-        return inTime;
-    }
-
-    public void setInTime(String inTime) {
-        this.inTime = inTime;
-    }
-
-    public String getOutTime() {
-        return outTime;
-    }
-
-    public void setOutTime(String outTime) {
-        this.outTime = outTime;
-    }
+    private Integer status;//预订状态 1 系统自动更新状态 0 未退房，未到离店时间 2 手动退订
 
     @Override
     public String toString() {
@@ -53,6 +30,7 @@ public class CustomerReservationInfo {
                 ", inTime='" + inTime + '\'' +
                 ", outTime='" + outTime + '\'' +
                 ", scheduledTime=" + scheduledTime +
+                ", status=" + status +
                 '}';
     }
 
@@ -96,4 +74,35 @@ public class CustomerReservationInfo {
         this.reserHouseNumber = reserHouseNumber;
     }
 
+    public String getInTime() {
+        return inTime;
+    }
+
+    public void setInTime(String inTime) {
+        this.inTime = inTime;
+    }
+
+    public String getOutTime() {
+        return outTime;
+    }
+
+    public void setOutTime(String outTime) {
+        this.outTime = outTime;
+    }
+
+    public Date getScheduledTime() {
+        return scheduledTime;
+    }
+
+    public void setScheduledTime(Date scheduledTime) {
+        this.scheduledTime = scheduledTime;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 }

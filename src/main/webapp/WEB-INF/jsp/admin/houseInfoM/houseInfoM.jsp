@@ -27,7 +27,7 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 					   aria-expanded="false">设置 <span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a href="#">个人信息</a></li>
+						<li><a href="/admin/getAdminInfo">个人信息</a></li>
 						<li role="separator" class="divider"></li>
 						<li><a href="#">退出登录</a></li>
 					</ul>
@@ -163,6 +163,10 @@
                 type: "POST",
                 url: url,
                 success: function (data) {
+                    if (data==0){
+                    	alert("该房型下有住户，删除失败！");
+                    	return;
+					}
                     alert("成功删除" + data + "个房型");
                     window.location.reload();//确认后自动刷新页面
                 }

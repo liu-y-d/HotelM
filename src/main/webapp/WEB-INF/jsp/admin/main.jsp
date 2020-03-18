@@ -43,50 +43,55 @@
 	</div><!-- /.container-fluid -->
 </nav>
 
-<div class="jumbotron" style="background-color: #5a84fd;text-align: center;margin-bottom: 0px;">
-	<h1>测试酒店</h1>
-	<p>啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</p>
+<div class="jumbotron" style="background-color: #9AB8C4;margin-bottom: 0px;">
+	<h3 style="padding-left: 15px">管理员：${adminInfo.adminName},欢迎您！</h3>
+	<p style="padding-left: 15px;font-size: 15px;margin-top: 20px">点击左上方房型信息管理按钮可管理酒店房间信息，点击预定信息管理可以对客户的预定信息修改，
+		如果您想查看某人是否预定了房间，请于右上方输入客户的信息进行订单查询！</p>
 </div>
 
-<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-	<!-- Indicators -->
-	<ol class="carousel-indicators">
-		<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-		<li data-target="#carousel-example-generic" data-slide-to="1"></li>
-		<li data-target="#carousel-example-generic" data-slide-to="2"></li>
-	</ol>
+<div id="myCarousel" class="carousel slide" style="width: 90%; margin: 0 auto; padding-top: 20px;">
+	<div class="carousel-inner">
+		<ol class="carousel-indicators">
+			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+			<li data-target="#myCarousel" data-slide-to="1"></li>
+			<li data-target="#myCarousel" data-slide-to="2"></li>
+			<li data-target="#myCarousel" data-slide-to="3"></li>
+			<li data-target="#myCarousel" data-slide-to="4"></li>
+		</ol>
 
-	<!-- Wrapper for slides -->
-	<div class="carousel-inner" role="listbox">
-		<div class="item active" style="text-align: center">
-			<img src="/assets/images/1.jpg" alt="..." style="display: inline-block">
-			<div class="carousel-caption">
-				...
-			</div>
+
+		<div class="item active">
+			<a href="#">
+				<img src="/assets/images/1.jpg" alt="第一张" width="100%">
+			</a>
 		</div>
-		<div class="item" style="text-align: center">
-			<img src="/assets/images/2.jpg" alt="..." style="display: inline-block">
-			<div class="carousel-caption">
-				...
-			</div>
+		<div class="item">
+			<a href="#">
+				<img src="/assets/images/2.jpg" alt="第一张" width="100%">
+			</a>
 		</div>
-		<div class="item" style="text-align: center">
-			<img src="/assets/images/3.jpg" alt="..." style="display: inline-block">
-			<div class="carousel-caption">
-				...
-			</div>
+		<div class="item">
+			<a href="#">
+				<img src="/assets/images/1.jpg" alt="第一张" width="100%">
+			</a>
 		</div>
+		<div class="item">
+			<a href="#">
+				<img src="/assets/images/2.jpg" alt="第一张" width="100%">
+			</a>
+		</div>
+		<div class="item">
+			<a href="#">
+				<img src="/assets/images/1.jpg" alt="第一张" width="100%">
+			</a>
+		</div>
+		<a href="#myCarousel" data-slide="prev" class="carousel-control left"><!-- ‹ -->
+			<span class="glyphicon glyphicon-chevron-left"></span>
+		</a><!-- 左箭头 -->
+		<a href="#myCarousel" data-slide="next" class="carousel-control right"><!-- › -->
+			<span class="glyphicon glyphicon-chevron-right"></span>
+		</a><!-- 右箭头 -->
 	</div>
-
-	<!-- Controls -->
-	<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-		<span class="sr-only">Previous</span>
-	</a>
-	<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-		<span class="sr-only">Next</span>
-	</a>
 </div>
 <footer style="text-align: center;background-color: #5a84fd" >
 
@@ -121,6 +126,14 @@
 <script type="text/javascript" src="/static/bootstrap-3.3.7-dist/js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+	$(function(){
+		//轮播图自动播放
+		$('#myCarousel').carousel({
+			interval: 3000,//自动播放4s
+
+		});
+
+	});
     function queryReservation() {
         var cusTel = $("#cusTel").val();
         if (!cusTel){

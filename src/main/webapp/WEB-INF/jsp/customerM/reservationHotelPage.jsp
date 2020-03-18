@@ -64,24 +64,10 @@
 						<input type="hidden" name="houseName" id="houseNam" disabled="disabled"/>
 						房间价格：<input type="number" name="housePrice" id="housePri" disabled="disabled"/>
 						预定数量：<input type="number" name="reserHouseNumber" id="reserHouseNumber" value="1"/><br/>
-						客户姓名：<input type="text" name="cusName" id="cusName"/>
-						客户电话：<input type="text" name="cusTel" id="cusTel"/><br>
-						入住时间: <input type="text" name="inTime" class="span2" value="" id="dpd1">
-						离店时间: <input type="text" name="outTime" class="span2" value="" id="dpd2"><br>
-<%--						<table class="table" >--%>
-<%--								<thead>--%>
-<%--								<tr>--%>
-<%--									<th style="margin: 0 auto;text-align: center">--%>
-<%--										入住时间:--%>
-<%--										<input type="text" name="inTime" class="span2" value="" id="dpd1">--%>
-<%--									</th>--%>
-<%--									<th style="margin: 0 auto;text-align: center">离店时间:--%>
-<%--										<input type="text" name="outTime" class="span2" value="" id="dpd2">--%>
-<%--									</th>--%>
-<%--								</tr>--%>
-<%--								</thead>--%>
-<%--							</table>--%>
-
+						客户姓名：<input type="text" name="cusName" id="cusName" autocomplete="off" maxlength="15"/>
+						客户电话：<input type="text" maxlength="11" onkeyup='this.value=this.value.replace(/\D/gi,"")' autocomplete="off" name="cusTel" id="cusTel"/><br>
+						入住时间: <input type="text" name="inTime" class="span2" value="" id="dpd1" autocomplete="off">
+						离店时间: <input type="text" name="outTime" class="span2" value="" id="dpd2" autocomplete="off"><br>
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="关闭"/>
 						<input type="submit" id="checkNull1" class="btn btn-primary" value="提交"/>
 					</form>
@@ -142,7 +128,6 @@
 	}).data('datepicker');
     //预定函数
     function reservationFunction(data) {
-    	console.log(0);
         var houseTypeId = data;
         var url = "/admin/queryById/" + houseTypeId;
         $.ajax({

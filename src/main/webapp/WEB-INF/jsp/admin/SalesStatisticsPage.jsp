@@ -41,7 +41,7 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">设置 <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">个人信息</a></li>
+                        <li><a href="/admin/getAdminInfo">个人信息</a></li>
 
                         <li role="separator" class="divider"></li>
                         <li><a href="/admin/signOut">退出登录</a></li>

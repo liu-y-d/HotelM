@@ -129,11 +129,17 @@ public class AdminController {
 	@RequestMapping(value = "/delHouseById/{houseTypeId}", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
 	@ResponseBody
 	public Integer delHouseById(@PathVariable("houseTypeId") Integer houseTypeId) {
-		int i = adminDao.delHouseInfo(houseTypeId);
-		if (i != 0) {
-			return i;
+		List<CustomerReservationInfo> customerReservationInfos = adminDao.queryByHouseById(houseTypeId);
+		if (customerReservationInfos.size()==0){
+			int i = adminDao.delHouseInfo(houseTypeId);
+			if (i != 0) {
+				return i;
+			}
+			return null;
+		}else{
+			return 0;
 		}
-		return null;
+
 	}
 
 	//跳转到客户预定页面
@@ -149,12 +155,17 @@ public class AdminController {
 		//查询户型信息
 		List<HotelInfo> hotelInfos = adminDao.selectHouseInfo();
 		model.addAttribute("hotelInfos", hotelInfos);
+
 		return "customerM/reservationHotelPage";
 	}
 
 	//添加客户预定信息
 	@RequestMapping(value = "/addCustomerReservationInfo", produces = {"application/json;charset=UTF-8"})
 	public String addCustomerReservationInfo(Model model,CustomerReservationInfo cusReInfo, HttpSession session) throws SQLException, ParseException {
+		if(cusReInfo.getCusTel()==null||cusReInfo.getInTime()==""||cusReInfo.getOutTime()==""||cusReInfo.getCusName()==null){
+			model.addAttribute("msg","预定信息填写有误请重试");
+			return "customerM/myError";
+		}
 		//根据手机号进行判断是否有预订信息，如果有则不允许重复预订
 		CustomerReservationInfo customerReservationInfo = adminDao.queryByCusTel(cusReInfo.getCusTel());
 		if (customerReservationInfo!=null){
@@ -162,13 +173,17 @@ public class AdminController {
 			model.addAttribute("cusTel",cusReInfo.getCusTel());
 			return "customerM/myError";
 		}
+		Integer houseNum = adminDao.queryHouseNumById(cusReInfo.getHouseTypeId());
+		if (cusReInfo.getReserHouseNumber()>houseNum){
+			model.addAttribute("msg","预订数量超过限制");
+			return "customerM/myError";
+		}
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 		Date date = sdf.parse(cusReInfo.getOutTime());
 		date.setHours(12);
 		//向预定表里添加客户信息
-		int i = adminDao.addCustomerReservationInfo(cusReInfo.getCusTel(), cusReInfo.getCusName(), cusReInfo.getHouseTypeId(), cusReInfo.getReserHouseNumber(),cusReInfo.getInTime(),cusReInfo.getOutTime(),new Date());
+		int i = adminDao.addCustomerReservationInfo(cusReInfo.getCusTel(), cusReInfo.getCusName(), cusReInfo.getHouseTypeId(), cusReInfo.getReserHouseNumber(),cusReInfo.getInTime(),cusReInfo.getOutTime(),new Date(),0);
 		//去数据库中查找该房型id的房间剩余房间数量
-		Integer houseNum = adminDao.queryHouseNumById(cusReInfo.getHouseTypeId());
 		//定义房间剩余数量应该更新多少
 		Integer laveHouseNum = 0;
 		laveHouseNum = houseNum - cusReInfo.getReserHouseNumber();
@@ -181,7 +196,7 @@ public class AdminController {
 			@Override
 			public void run() {
 				//过了离店时间删除预订信息
-				adminDao.deleteCustomerReservationInfoByTel(cusReInfo.getCusTel());
+				adminDao.updateCustomerReservationInfoStatus(cusReInfo.getCusTel(),1);
 				Integer houseNum = adminDao.queryHouseNumById(cusReInfo.getHouseTypeId());
 				adminDao.updateHotelInfoHotelNum(cusReInfo.getHouseTypeId(), houseNum+cusReInfo.getReserHouseNumber());
 				System.out.println("aaaa");
@@ -252,7 +267,7 @@ public class AdminController {
 			String format = sdf.format(time);
 			CustomerReservationInfo info = adminDao.queryByCusTel(cusTel);
 			//删除预订信息
-			adminDao.deleteCustomerReservationInfoByTel(cusTel);
+			adminDao.updateCustomerReservationInfoStatus(cusTel,2);
 			Integer number = adminDao.queryHouseNumById(info.getHouseTypeId());
 			adminDao.updateHotelInfoHotelNum(info.getHouseTypeId(),number+info.getReserHouseNumber());
 			//删除总账信息
@@ -263,6 +278,40 @@ public class AdminController {
 			msg = "超时退订失败";
 			return JSON.toJSONString(msg);
 		}
+	}
+
+	/**
+	 * 修改预订信息
+	 * @return
+	 */
+	@RequestMapping(value = "/editReservation",method = RequestMethod.POST)
+	public String editReservation(CustomerReservationInfo cusReInfo,Model model) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		Date date = sdf.parse(cusReInfo.getOutTime());
+		date.setHours(12);
+		cusReInfo.setScheduledTime(new Date());
+		int i = adminDao.updateCustomerReservationInfo(cusReInfo);
+		//设置在离店日期中午12点删除预订数据
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			//run方法就是具体需要定时执行的任务
+			@Override
+			public void run() {
+				//过了离店时间删除预订信息
+				adminDao.deleteCustomerReservationInfoByTel(cusReInfo.getCusTel());
+				Integer houseNum = adminDao.queryHouseNumById(cusReInfo.getHouseTypeId());
+				adminDao.updateHotelInfoHotelNum(cusReInfo.getHouseTypeId(), houseNum+cusReInfo.getReserHouseNumber());
+				System.out.println("aaaa");
+
+			}
+		}, date);
+		if (i==1){
+			model.addAttribute("msg","修改成功");
+		}else{
+			model.addAttribute("msg","修改失败");
+		}
+		model.addAttribute("cusTel",cusReInfo.getCusTel());
+		return "customerM/myError";
 	}
 
 	/**

@@ -21,7 +21,7 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 					   aria-expanded="false">设置 <span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a href="#">个人信息</a></li>
+						<li><a href="/admin/getAdminInfo">个人信息</a></li>
 
 						<li role="separator" class="divider"></li>
 						<li><a href="#">退出登录</a></li>
@@ -42,6 +42,7 @@
 				<span>预定数量：${cusReserInfo.reserHouseNumber}</span>
 				<span>入住时间：${cusReserInfo.inTime}</span>
 				<span>离店时间：${cusReserInfo.outTime}</span>
+				<span>预订状态：${cusReserInfo.status == 0 ? '在住用户':'订单信息已失效'}</span>
 			</div>
 		</div>
 	</c:forEach>

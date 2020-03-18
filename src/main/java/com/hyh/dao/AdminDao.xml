@@ -27,8 +27,12 @@
 	</delete>
 	<!--添加预定信息-->
 	<insert id="addCustomerReservationInfo" parameterType="com.hyh.pojo.CustomerReservationInfo">
-		insert into customerreservationinfo values (#{cusName},#{cusTel},#{houseTypeId},#{reserHouseNumber},#{inTime},#{outTime},#{scheduledTime})
+		insert into customerreservationinfo values (#{cusName},#{cusTel},#{houseTypeId},#{reserHouseNumber},#{inTime},#{outTime},#{scheduledTime},#{status})
 	</insert>
+	<!--更新预订信息-->
+	<update id="updateCustomerReservationInfo" parameterType="com.hyh.pojo.CustomerReservationInfo">
+		update customerreservationinfo set inTime = #{inTime},outTime = #{outTime} where cusTel = #{cusTel}
+	</update>
 	<!--查找房间剩余数量-->
 	<select id="queryHouseNumById" parameterType="Integer" resultType="Integer">
 		select houseNum from hotelInfo where houseTypeId = #{houseTypeId}
@@ -41,9 +45,13 @@
 	<select id="queryByCusTel" parameterType="String" resultType="com.hyh.pojo.CustomerReservationInfo">
 		select * from customerreservationinfo where cusTel = #{cusTel}
 	</select>
+	<!--根据户型Id查询预定信息-->
+	<select id="queryByHouseById" parameterType="Integer" resultType="com.hyh.pojo.CustomerReservationInfo">
+		select * from customerreservationinfo where houseTypeId = #{houseTypeId}
+	</select>
 	<!--查找预定信息-->
 	<select id="queryCustomerReservationInfo" resultType="com.hyh.pojo.CustomerReservationInfo">
-		select customerreservationinfo.cusName,customerreservationinfo.cusTel,customerreservationinfo.houseTypeId,customerreservationinfo.reserHouseNumber,hotelInfo.houseName,customerreservationinfo.inTime,customerreservationinfo.outTime from customerreservationinfo join hotelInfo on customerreservationinfo.houseTypeId = hotelInfo.houseTypeId
+		select customerreservationinfo.cusName,customerreservationinfo.cusTel,customerreservationinfo.houseTypeId,customerreservationinfo.reserHouseNumber,hotelInfo.houseName,customerreservationinfo.inTime,customerreservationinfo.outTime,customerreservationinfo.status from customerreservationinfo join hotelInfo on customerreservationinfo.houseTypeId = hotelInfo.houseTypeId
 	</select>
 	<!--删除预订信息-->
 	<delete id="deleteCustomerReservationInfoByTel">
@@ -52,7 +60,7 @@
 
 	<!--统计每月预订人数-->
 	<select id="peopleStatistics" resultType="com.hyh.pojo.SalesStatistics">
-		SELECT COUNT(1) AS number,inTime from customerreservationinfo GROUP BY inTime
+		SELECT COUNT(1) AS number,inTime from customerreservationinfo where status = '1' GROUP BY inTime
 	</select>
 	<!--统计财务-->
 	<select id="financeStatistics" resultType="com.hyh.pojo.FinanceStatistics">
@@ -70,4 +78,13 @@
 	<update id="updateAdminPwd">
 		update adminInfo set adminPwd = #{adminPwd} where adminId = #{adminId}
 	</update>
+	<!--更新预订信息状态-->
+	<update id="updateCustomerReservationInfoStatus">
+		update customerreservationinfo set status = #{status} where cusTel = #{cusTel}
+	</update>
+
+	<!--获取所有预订信息-->
+	<select id="getAllCustomerReservationInfo" resultType="com.hyh.pojo.CustomerReservationInfo">
+		select * from customerreservationinfo
+	</select>
 </mapper>
