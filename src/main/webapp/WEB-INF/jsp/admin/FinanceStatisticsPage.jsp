@@ -50,9 +50,8 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-<div class="jumbotron" style="background-color: #5a84fd;text-align: center;margin-bottom: 0px;">
+<div class="jumbotron" style="text-align: center;margin-bottom: 0px;">
     <h1>财务统计</h1>
-    <p>啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</p>
 </div>
 <body>
 <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->

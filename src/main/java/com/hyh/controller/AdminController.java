@@ -189,7 +189,9 @@ public class AdminController {
 		laveHouseNum = houseNum - cusReInfo.getReserHouseNumber();
 		//用户预定该房间的时候对应的房型信息表里的房间数量应该进行更新
 		adminDao.updateHotelInfoHotelNum(cusReInfo.getHouseTypeId(), laveHouseNum);
+
 		//设置在离店日期中午12点删除预订数据
+
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			//run方法就是具体需要定时执行的任务
@@ -199,14 +201,15 @@ public class AdminController {
 				adminDao.updateCustomerReservationInfoStatus(cusReInfo.getCusTel(),1);
 				Integer houseNum = adminDao.queryHouseNumById(cusReInfo.getHouseTypeId());
 				adminDao.updateHotelInfoHotelNum(cusReInfo.getHouseTypeId(), houseNum+cusReInfo.getReserHouseNumber());
+				HotelInfo hotelInfo = adminDao.queryById(cusReInfo.getHouseTypeId());
+				adminService.insertFinanceInfo(cusReInfo.getCusTel(),cusReInfo.getReserHouseNumber()*hotelInfo.getHousePrice(),new Date());
 				System.out.println("aaaa");
 
 			}
 		}, date);
-		HotelInfo hotelInfo = adminDao.queryById(cusReInfo.getHouseTypeId());
 
-		adminService.insertFinanceInfo(cusReInfo.getCusTel(),cusReInfo.getReserHouseNumber()*hotelInfo.getHousePrice(),new Date());
 		//根据房型id查询房型信息
+		HotelInfo hotelInfo = adminDao.queryById(cusReInfo.getHouseTypeId());
 		//添加预定信息到视图
 		session.setAttribute("cusReInfo", cusReInfo);
 		//添加房型信息到视图

@@ -53,11 +53,10 @@
 </nav>
 
 <body>
-<div class="jumbotron" style="background-color: #5a84fd;text-align: center;margin-bottom: 0px;">
-    <h1>销售统计</h1>
-    <p>啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</p>
-</div>
 
+<div class="jumbotron" style="text-align: center;margin-bottom: 0px;">
+    <h1>销售统计</h1>
+</div>
 <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
 <div id="main" style="width: 100%;height:500px;"></div>
 <!-- 模态框（Modal）查询预定信息显示模态框 -->
