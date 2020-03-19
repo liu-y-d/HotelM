@@ -16,6 +16,21 @@
 		<div class="navbar-header">
 			<a class="navbar-brand" href="/admin/reservationPage">${hotelName}</a>
 		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li><a href="/admin/toHouseInfoMInReservationPage">查看房型信息</a></li>
+			</ul>
+			<form class="navbar-form navbar-left" action="">
+				<div class="form-group">
+					<input type="text" name="cusTel" class="form-control" id="cusTel" placeholder="请输入客户电话" autocomplete="off">
+				</div>
+				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#queryByCusTel"
+						onclick="queryReservation()">查询预定信息
+				</button>
+			</form>
+		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
 </nav>
 
@@ -70,6 +85,39 @@
 						离店时间: <input type="text" name="outTime" class="span2" value="" id="dpd2" autocomplete="off"><br>
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="关闭"/>
 						<input type="submit" id="checkNull1" class="btn btn-primary" value="提交"/>
+					</form>
+				</div>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- 模态框（Modal）预定房间 -->
+<div class="modal fade" id="queryByCusTel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+				</button>
+				<h4 class="modal-title">
+					预订信息
+				</h4>
+			</div>
+			<div class="modal-body" id="modal">
+				<div class="modal-hyh">
+					<form action="/admin/editReservation" method="post" id="meForm1">
+						<%--                        <input type="hidden" name="houseTypeId" id="houseTypeId"/>--%>
+						<%--                        <input type="hidden" name="cusTel" /><br/>--%>
+						<%--加载选中的户型名--%>
+						房间名称：<input type="text" name="houseName" id="houseName" readonly="readonly">
+						预定数量：<input type="number" name="reserHouseNumber" id="reserHouseNumber" value="1" readonly="readonly"/><br/>
+						客户姓名：<input type="text" name="cusName" id="cusName1" readonly="readonly"/>
+						客户电话：<input type="text" name="cusTel" id="cusTelPhone" readonly="readonly"/><br>
+						入住时间: <input type="text" name="inTime" class="span2" value="" id="dpd11">
+						离店时间: <input type="text" name="outTime" class="span2" value="" id="dpd22"><br>
+						<input type="button" class="btn btn-default" data-dismiss="modal" id="Unsubscribe"
+							   onclick="unsubscribe()" value="退订"/>
+						<input type="submit" id="checkNull1" class="btn btn-primary" value="提交修改"/>
 					</form>
 				</div>
 			</div>
@@ -146,6 +194,61 @@
             }
         });
     }
+	function queryReservation() {
+		var cusTel = $("#cusTel").val();
+		if (!cusTel) {
+			cusTel = 1;
+		}
+		var url = "/admin/queryByCusTel/" + cusTel;
+		$.ajax({
+			type: "POST",
+			url: url,
+			success: function (data) {
+				var houseTypeId = data.houseTypeId;
+				var houseName = data.houseName;
+				var cusTel = data.cusTel;
+				var cusName = data.cusName;
+				var reserHouseNumber = data.reserHouseNumber;
+				var inTime = data.inTime;
+				var outTime = data.outTime;
+				if (!data) {
+
+					$("#meForm1").remove();
+					if ($("#modal").children().length==1){
+						$("#modal").append("<div>无信息</div>" +
+								"\t\t\t\t\t<input type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" id=\"close\" value=\"关闭\"/>\n");
+					}
+
+				} else {
+					$("#houseTypeId").val(houseTypeId);
+					$("#houseName").val(houseName);
+					$("#cusTelPhone").val(cusTel);
+					$("#cusName1").val(cusName);
+					$("#reserHouseNumber").val(reserHouseNumber);
+					$("#dpd11").val(inTime);
+					$("#dpd22").val(outTime);
+					$("#Unsubscribe").css({"display": "inline"});
+
+				}
+			}
+		});
+	}
+
+	// 退订函数
+	function unsubscribe() {
+		var cusTel = $("#cusTel").val();
+		if (!cusTel) {
+			cusTel = 1;
+		}
+		$.ajax({
+			type: "GET",
+			url: "/admin/Unsubscribe/" + cusTel,
+			success: function (data) {
+				alert(data);
+				window.location.reload("http://localhost:8080/admin/reservationPage");
+			}
+		});
+	}
 </script>
 </body>
 </html>

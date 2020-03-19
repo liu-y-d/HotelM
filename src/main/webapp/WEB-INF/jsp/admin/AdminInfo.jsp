@@ -43,12 +43,14 @@
 	</div><!-- /.container-fluid -->
 </nav>
 
-<div class="jumbotron" style="background-color: #5a84fd;text-align: center;margin-bottom: 0px;">
-	管理员编号：<p id="adminId">${adminInfo.adminId}</p>
-	管理员名称：<p >${adminInfo.adminName}</p>
-	管理员原密码：<p id="oldPwd">${adminInfo.adminPwd}</p><br>
-	管理员密码：<input type="password" name="adminPwd" id="adminPwd">
-	<input type="button" value="更改密码" onclick="updateAdminPwd()">
+<div style="width: 50%; margin: 0 auto; background-color: #eeeeee;height: 250px;margin-top: 50px">
+	<div class="col-lg-12 col-md-12 col-sm-12" style="padding-top:50px;font-size:20px;width:100%;text-align: center;margin-bottom: 0px;">
+		<span style="margin-top: 20px" id="adminId">管理员编号：${adminInfo.adminId}</span><br>
+		<span style="margin-top: 20px">管理员名称：${adminInfo.adminName}</span><br>
+		<span style="margin-top: 20px" id="oldPwd">管理员原密码：${adminInfo.adminPwd}</span><br>
+		<span>管理员密码：</span><input style="margin-top: 20px" type="password" name="adminPwd" id="adminPwd">
+		<input type="button" class="btn btn-success" value="更改密码" onclick="updateAdminPwd()">
+	</div>
 </div>
 <script>
 	function updateAdminPwd() {
@@ -75,10 +77,10 @@
 
 	}
 </script>
-<footer style="text-align: center;background-color: #5a84fd" >
+<%--<footer style="text-align: center;background-color: #5a84fd" >--%>
 
-	<p>作者：滑燕河</p>
-</footer>
+<%--	<p>作者：滑燕河</p>--%>
+<%--</footer>--%>
 
 <!-- 模态框（Modal）查询预定信息显示模态框 -->
 <div class="modal fade" id="queryByCusTel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"

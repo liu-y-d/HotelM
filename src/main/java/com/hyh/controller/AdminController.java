@@ -34,6 +34,7 @@ public class AdminController {
 	private AdminService adminService;
 	@Resource
 	private AdminDao adminDao;
+	private static Timer timer;
 
 	@RequestMapping("/Login")
 	//登录方法
@@ -162,7 +163,7 @@ public class AdminController {
 	//添加客户预定信息
 	@RequestMapping(value = "/addCustomerReservationInfo", produces = {"application/json;charset=UTF-8"})
 	public String addCustomerReservationInfo(Model model,CustomerReservationInfo cusReInfo, HttpSession session) throws SQLException, ParseException {
-		if(cusReInfo.getCusTel()==null||cusReInfo.getInTime()==""||cusReInfo.getOutTime()==""||cusReInfo.getCusName()==null){
+		if(cusReInfo.getCusTel()==null||cusReInfo.getCusTel()==""||cusReInfo.getInTime()==""||cusReInfo.getOutTime()==""||cusReInfo.getCusName()==null){
 			model.addAttribute("msg","预定信息填写有误请重试");
 			return "customerM/myError";
 		}
@@ -190,9 +191,9 @@ public class AdminController {
 		//用户预定该房间的时候对应的房型信息表里的房间数量应该进行更新
 		adminDao.updateHotelInfoHotelNum(cusReInfo.getHouseTypeId(), laveHouseNum);
 
-		//设置在离店日期中午12点删除预订数据
+		//设置在离店日期中午12点更新预订数据状态
 
-		Timer timer = new Timer();
+		timer = new Timer();
 		timer.schedule(new TimerTask() {
 			//run方法就是具体需要定时执行的任务
 			@Override
@@ -202,18 +203,20 @@ public class AdminController {
 				Integer houseNum = adminDao.queryHouseNumById(cusReInfo.getHouseTypeId());
 				adminDao.updateHotelInfoHotelNum(cusReInfo.getHouseTypeId(), houseNum+cusReInfo.getReserHouseNumber());
 				HotelInfo hotelInfo = adminDao.queryById(cusReInfo.getHouseTypeId());
-				adminService.insertFinanceInfo(cusReInfo.getCusTel(),cusReInfo.getReserHouseNumber()*hotelInfo.getHousePrice(),new Date());
-				System.out.println("aaaa");
+				adminService.insertFinanceInfo(cusReInfo.getCusTel(),adminService.dateDiff(cusReInfo.getInTime(), cusReInfo.getOutTime()) * hotelInfo.getHousePrice() * cusReInfo.getReserHouseNumber(),new Date());
 
 			}
 		}, date);
 
 		//根据房型id查询房型信息
 		HotelInfo hotelInfo = adminDao.queryById(cusReInfo.getHouseTypeId());
+		double sum = adminService.dateDiff(cusReInfo.getInTime(), cusReInfo.getOutTime()) * hotelInfo.getHousePrice() * cusReInfo.getReserHouseNumber();
 		//添加预定信息到视图
 		session.setAttribute("cusReInfo", cusReInfo);
 		//添加房型信息到视图
 		session.setAttribute("hotelInfo", hotelInfo);
+		session.setAttribute("sum", sum);
+
 		return "customerM/personalReservationInfo";
 	}
 
@@ -224,7 +227,7 @@ public class AdminController {
 		if (null == cusTel) {
 			return null;
 		}
-		CustomerReservationInfo customerReservationInfo = adminDao.queryByCusTel(cusTel);
+		CustomerReservationInfo customerReservationInfo = adminDao.queryByCusTelAndStatus(cusTel);
 		if (null == (customerReservationInfo)) {
 			return null;
 		}
@@ -244,10 +247,17 @@ public class AdminController {
 
 	}
 
-	//管理员查看预定信息
+	//管理员查看预定信息过期
 	@RequestMapping("/queryCustomerReservationInfo")
 	public String queryCustomerReservationInfo(Model model) {
-		List<CustomerReservationInfo> customerReservationInfos = adminDao.queryCustomerReservationInfo();
+		List<CustomerReservationInfo> customerReservationInfos = adminDao.queryCustomerReservationInfo(0);
+		model.addAttribute("customerReservationInfos", customerReservationInfos);
+		return "admin/CustomerReservationInfoM/customerReservationInfoPage";
+	}
+	//在住用户
+	@RequestMapping("/queryCustomerReservationInfoStatus0")
+	public String queryCustomerReservationInfoStatus0(Model model) {
+		List<CustomerReservationInfo> customerReservationInfos = adminDao.queryCustomerReservationInfoStatus0(0);
 		model.addAttribute("customerReservationInfos", customerReservationInfos);
 		return "admin/CustomerReservationInfoM/customerReservationInfoPage";
 	}
@@ -289,32 +299,48 @@ public class AdminController {
 	 */
 	@RequestMapping(value = "/editReservation",method = RequestMethod.POST)
 	public String editReservation(CustomerReservationInfo cusReInfo,Model model) throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-		Date date = sdf.parse(cusReInfo.getOutTime());
-		date.setHours(12);
-		cusReInfo.setScheduledTime(new Date());
-		int i = adminDao.updateCustomerReservationInfo(cusReInfo);
-		//设置在离店日期中午12点删除预订数据
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
-			//run方法就是具体需要定时执行的任务
-			@Override
-			public void run() {
-				//过了离店时间删除预订信息
-				adminDao.deleteCustomerReservationInfoByTel(cusReInfo.getCusTel());
-				Integer houseNum = adminDao.queryHouseNumById(cusReInfo.getHouseTypeId());
-				adminDao.updateHotelInfoHotelNum(cusReInfo.getHouseTypeId(), houseNum+cusReInfo.getReserHouseNumber());
-				System.out.println("aaaa");
+		CustomerReservationInfo customerReservationInfo = adminDao.queryByCusTel(cusReInfo.getCusTel());
+		Date time = customerReservationInfo.getScheduledTime();
+		time.setDate(time.getDate()+1);
+		time.setHours(0);
+		time.setMinutes(0);
+		time.setSeconds(0);
+		String msg = "";
+		if (new Date().after(time)==false){
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date date = sdf.parse(cusReInfo.getOutTime());
+			date.setHours(12);
+			cusReInfo.setScheduledTime(new Date());
+			int i = adminDao.updateCustomerReservationInfo(cusReInfo);
+			//设置在离店日期中午12点删除预订数据
+			timer = new Timer();
+			timer.schedule(new TimerTask() {
+				//run方法就是具体需要定时执行的任务
+				@Override
+				public void run() {
+					//过了离店时间删除预订信息
+					adminDao.updateCustomerReservationInfoStatus(cusReInfo.getCusTel(),1);
+					Integer houseNum = adminDao.queryHouseNumById(cusReInfo.getHouseTypeId());
+					adminDao.updateHotelInfoHotelNum(cusReInfo.getHouseTypeId(), houseNum+cusReInfo.getReserHouseNumber());
+					HotelInfo hotelInfo = adminDao.queryById(cusReInfo.getHouseTypeId());
+					adminService.insertFinanceInfo(cusReInfo.getCusTel(),adminService.dateDiff(cusReInfo.getInTime(), cusReInfo.getOutTime()) * hotelInfo.getHousePrice() * cusReInfo.getReserHouseNumber(),new Date());
 
+				}
+			}, date);
+			if (i==1){
+				model.addAttribute("msg","修改成功");
+			}else{
+				model.addAttribute("msg","修改失败");
 			}
-		}, date);
-		if (i==1){
-			model.addAttribute("msg","修改成功");
-		}else{
-			model.addAttribute("msg","修改失败");
+			model.addAttribute("cusTel",cusReInfo.getCusTel());
+			return "customerM/myError";
+		}else {
+			model.addAttribute("msg","超时修改");
+			return "customerM/myError";
 		}
-		model.addAttribute("cusTel",cusReInfo.getCusTel());
-		return "customerM/myError";
+
+
+
 	}
 
 	/**

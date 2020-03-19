@@ -42,6 +42,10 @@
 		update hotelInfo set houseNum = #{houseNum} where houseTypeId = #{houseTypeId}
 	</update>
 	<!--根据客户电话查询预定信息-->
+	<select id="queryByCusTelAndStatus" parameterType="String" resultType="com.hyh.pojo.CustomerReservationInfo">
+		select * from customerreservationinfo where cusTel = #{cusTel} and status=0
+	</select>
+	<!--根据客户电话查询预定信息-->
 	<select id="queryByCusTel" parameterType="String" resultType="com.hyh.pojo.CustomerReservationInfo">
 		select * from customerreservationinfo where cusTel = #{cusTel}
 	</select>
@@ -51,7 +55,10 @@
 	</select>
 	<!--查找预定信息-->
 	<select id="queryCustomerReservationInfo" resultType="com.hyh.pojo.CustomerReservationInfo">
-		select customerreservationinfo.cusName,customerreservationinfo.cusTel,customerreservationinfo.houseTypeId,customerreservationinfo.reserHouseNumber,hotelInfo.houseName,customerreservationinfo.inTime,customerreservationinfo.outTime,customerreservationinfo.status from customerreservationinfo join hotelInfo on customerreservationinfo.houseTypeId = hotelInfo.houseTypeId
+		select customerreservationinfo.cusName,customerreservationinfo.cusTel,customerreservationinfo.houseTypeId,customerreservationinfo.reserHouseNumber,hotelInfo.houseName,customerreservationinfo.inTime,customerreservationinfo.outTime,customerreservationinfo.status from customerreservationinfo join hotelInfo on customerreservationinfo.houseTypeId = hotelInfo.houseTypeId where customerreservationinfo.status != #{status}
+	</select>
+	<select id="queryCustomerReservationInfoStatus0" resultType="com.hyh.pojo.CustomerReservationInfo">
+		select customerreservationinfo.cusName,customerreservationinfo.cusTel,customerreservationinfo.houseTypeId,customerreservationinfo.reserHouseNumber,hotelInfo.houseName,customerreservationinfo.inTime,customerreservationinfo.outTime,customerreservationinfo.status from customerreservationinfo join hotelInfo on customerreservationinfo.houseTypeId = hotelInfo.houseTypeId where customerreservationinfo.status = #{status}
 	</select>
 	<!--删除预订信息-->
 	<delete id="deleteCustomerReservationInfoByTel">

@@ -17,7 +17,15 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="/admin/toHouseInfoM">房型信息管理</a></li>
-				<li><a href="/admin/queryCustomerReservationInfo">预定信息管理</a></li>
+				<li class="dropdown">
+					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">预定信息管理
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="/admin/queryCustomerReservationInfoStatus0">在住用户</a></li>
+						<li><a href="/admin/queryCustomerReservationInfo">过期用户</a></li>
+					</ul>
+				</li>
 				<li><a href="/SalesStatistics">销量统计</a></li>
 				<li><a href="/FinanceStatistics">财务统计</a></li>
 			</ul>

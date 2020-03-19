@@ -23,7 +23,7 @@ public class projectInit {
     public void updateOutdatedData() throws ParseException {
         List<CustomerReservationInfo> allCustomerReservationInfo = adminDao.getAllCustomerReservationInfo();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-        Date date = new Date();
+        Date date ;
         Date currentTime = new Date();
         for (CustomerReservationInfo customerReservationInfo : allCustomerReservationInfo) {
             date=sdf.parse(customerReservationInfo.getOutTime());
@@ -32,7 +32,7 @@ public class projectInit {
                 Integer integer = adminDao.queryHouseNumById(customerReservationInfo.getHouseTypeId());
                 adminDao.updateHotelInfoHotelNum(customerReservationInfo.getHouseTypeId(),integer+customerReservationInfo.getReserHouseNumber());
                 HotelInfo hotelInfo = adminDao.queryById(customerReservationInfo.getHouseTypeId());
-                adminService.insertFinanceInfo(customerReservationInfo.getCusTel(),customerReservationInfo.getReserHouseNumber()*hotelInfo.getHousePrice(),date);
+                adminService.insertFinanceInfo(customerReservationInfo.getCusTel(),adminService.dateDiff(customerReservationInfo.getInTime(), customerReservationInfo.getOutTime()) * hotelInfo.getHousePrice() * customerReservationInfo.getReserHouseNumber(),date);
             }
         }
         System.out.println("过期数据初始化完成");

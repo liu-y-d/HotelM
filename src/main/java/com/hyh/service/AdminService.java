@@ -15,4 +15,5 @@ public interface AdminService {
     int insertHotelInfo(@Param("houseName") String houseName, @Param("houseNum") Integer houseNum, @Param("housePrice") Double housePrice, @Param("houseImg") String houseImg);
     //添加总账信息
     void insertFinanceInfo(String cusTel, double cusMoney, Date time);
+    Integer dateDiff(String startTime, String endTime);
 }

@@ -19,17 +19,28 @@
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li><a data-toggle="modal" href="#addHouseInfoModal">增加户型</a></li>
+				<li><a href="/admin/toHouseInfoM">房型信息管理</a></li>
+				<li class="dropdown">
+					<a href="/admin/queryCustomerReservationInfo" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">预定信息管理
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="/admin/queryCustomerReservationInfoStatus0">在住用户</a></li>
+						<li><a href="/admin/queryCustomerReservationInfo">过期用户</a></li>
+					</ul>
+				</li>
+				<li><a href="/SalesStatistics">销量统计</a></li>
+				<li><a href="/FinanceStatistics">财务统计</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="#">${adminInfo.adminName}</a></li>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-					   aria-expanded="false">设置 <span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">设置 <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="/admin/getAdminInfo">个人信息</a></li>
+
 						<li role="separator" class="divider"></li>
-						<li><a href="#">退出登录</a></li>
+						<li><a href="/admin/signOut">退出登录</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -39,16 +50,16 @@
 
 <div class="row">
 	<c:forEach var="hotelInfo" items="${hotelInfos}">
-		<div class="col-md-3">
+		<div class="col-md-3 ">
 			<div class="houseInfo">
 				<img src="${hotelInfo.houseImg}" width="100%" height="200px"/>
 				<span>房型编号：${hotelInfo.houseTypeId}</span>
 				<span>房型名称：${hotelInfo.houseName}</span>
 				<span>剩余数量：${hotelInfo.houseNum}</span>
 				<span>房间价格：${hotelInfo.housePrice}</span>
-				<span><input type="button" value="编辑" data-toggle="modal" data-target="#editHouseInfo"
+				<span><input type="button" class="btn btn-success" value="编辑" data-toggle="modal" data-target="#editHouseInfo"
 				             onclick="editFunction(${hotelInfo.houseTypeId})">
-				<input type="button" value="删除" onclick="delFunction(${hotelInfo.houseTypeId})"></span>
+				<input type="button" class="btn btn-danger" value="删除" onclick="delFunction(${hotelInfo.houseTypeId})"></span>
 			</div>
 		</div>
 	</c:forEach>
@@ -174,6 +185,38 @@
         }
 
     }
+	function queryReservation() {
+		var cusTel = $("#cusTel").val();
+		if (!cusTel){
+			cusTel = 1;
+		}
+		var url = "/admin/queryByCusTel/" + cusTel;
+		$.ajax({
+			type: "POST",
+			url: url,
+			success: function (data) {
+				var houseTypeId = data.houseTypeId;
+				var houseName = data.houseName;
+				var cusTel = data.cusTel;
+				var cusName = data.cusName;
+				var reserHouseNumber = data.reserHouseNumber;
+				if (!data){
+					$("#houseTypeId").val('无信息');
+					$("#houseName").val('无信息');
+					$("#cusTelPhone").val('无信息');
+					$("#cusName").val('无信息');
+					$("#reserHouseNumber").val('无信息');
+
+				}else {
+					$("#houseTypeId").val(houseTypeId);
+					$("#houseName").val(houseName);
+					$("#cusTelPhone").val(cusTel);
+					$("#cusName").val(cusName);
+					$("#reserHouseNumber").val(reserHouseNumber);
+				}
+			}
+		});
+	}
 </script>
 </body>
 </html>

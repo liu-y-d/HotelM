@@ -26,16 +26,18 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a href="/admin/toHouseInfoM">房型信息管理</a></li>
-                <li><a href="/admin/queryCustomerReservationInfo">预定信息管理</a></li>
+                <li class="dropdown">
+                    <a href="/admin/queryCustomerReservationInfo" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">预定信息管理
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/admin/queryCustomerReservationInfoStatus0">在住用户</a></li>
+                        <li><a href="/admin/queryCustomerReservationInfo">过期用户</a></li>
+                    </ul>
+                </li>
                 <li><a href="/SalesStatistics">销量统计</a></li>
                 <li><a href="/FinanceStatistics">财务统计</a></li>
             </ul>
-            <form class="navbar-form navbar-left">
-                <div class="form-group">
-                    <input type="text" class="form-control" id="cusTel" placeholder="请输入客户电话">
-                </div>
-                <button type="button" id="checkNull" class="btn btn-default" data-toggle="modal" data-target="#queryByCusTel" onclick="queryReservation()">查询预定信息</button>
-            </form>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#">${adminInfo.adminName}</a></li>
                 <li class="dropdown">
@@ -59,64 +61,7 @@
 </div>
 <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
 <div id="main" style="width: 100%;height:500px;"></div>
-<!-- 模态框（Modal）查询预定信息显示模态框 -->
-<div class="modal fade" id="queryByCusTel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="hiden">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
-                </button>
-                <h4 class="modal-title">
-                    查看预定信息
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="modal-hyh">
-                    户型编号：<input type="text" id="houseTypeId"/><br/>
-                    户型名称：<input type="text" id="houseName"/><br/>
-                    客户电话：<input type="text" id="cusTelPhone"/><br/>
-                    客户名称：<input type="text" id="cusName"/><br/>
-                    预定数量：<input type="text" id="reserHouseNumber"/><br/>
-                    <input type="button" class="btn btn-default" data-dismiss="modal" value="关闭"/>
-                </div>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 <script type="text/javascript">
-    function queryReservation() {
-        var cusTel = $("#cusTel").val();
-        if (!cusTel){
-            cusTel = 1;
-        }
-        var url = "/admin/queryByCusTel/" + cusTel;
-        $.ajax({
-            type: "POST",
-            url: url,
-            success: function (data) {
-                var houseTypeId = data.houseTypeId;
-                var houseName = data.houseName;
-                var cusTel = data.cusTel;
-                var cusName = data.cusName;
-                var reserHouseNumber = data.reserHouseNumber;
-                if (!data){
-                    $("#houseTypeId").val('无信息');
-                    $("#houseName").val('无信息');
-                    $("#cusTelPhone").val('无信息');
-                    $("#cusName").val('无信息');
-                    $("#reserHouseNumber").val('无信息');
-
-                }else {
-                    $("#houseTypeId").val(houseTypeId);
-                    $("#houseName").val(houseName);
-                    $("#cusTelPhone").val(cusTel);
-                    $("#cusName").val(cusName);
-                    $("#reserHouseNumber").val(reserHouseNumber);
-                }
-            }
-        });
-    }
 
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('main'));

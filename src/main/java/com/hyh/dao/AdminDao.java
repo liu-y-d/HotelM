@@ -36,10 +36,12 @@ public interface AdminDao {
     int updateHotelInfoHotelNum(@Param("houseTypeId") Integer houseTypeId, @Param("houseNum") Integer houseNum);
     //根据客户电话查询预定信息
     CustomerReservationInfo queryByCusTel(@Param("cusTel") String cusTel);
+    CustomerReservationInfo queryByCusTelAndStatus(@Param("cusTel") String cusTel);
     //根据客户电话查询预定信息
     List<CustomerReservationInfo> queryByHouseById(@Param("houseTypeId") Integer houseTypeId);
     //查找预定信息
-    List<CustomerReservationInfo> queryCustomerReservationInfo();
+    List<CustomerReservationInfo> queryCustomerReservationInfoStatus0(@Param("status")Integer status);
+    List<CustomerReservationInfo> queryCustomerReservationInfo(@Param("status")Integer status);
 
     //删除订单信息
     void deleteCustomerReservationInfoByTel(@Param("cusTel") String cusTel);

@@ -39,7 +39,7 @@
 	<li class="list-group-item">客户电话：${cusReInfo.cusTel}</li>
 	<li class="list-group-item">房间数量：${cusReInfo.reserHouseNumber}</li>
 	<li class="list-group-item">房间价格：${hotelInfo.housePrice}</li>
-	<li class="list-group-item">支付总价：${hotelInfo.housePrice*cusReInfo.reserHouseNumber}</li>
+	<li class="list-group-item">支付总价：${sum}</li>
 	<li class="list-group-item">入住时间：${cusReInfo.inTime}</li>
 	<li class="list-group-item">离店时间：${cusReInfo.outTime}</li>
 </ul>

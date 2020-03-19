@@ -20,7 +20,7 @@
             </ul>
             <form class="navbar-form navbar-left" action="">
                 <div class="form-group">
-                    <input type="text" name="cusTel" class="form-control" id="cusTel" placeholder="请输入客户电话">
+                    <input type="text" name="cusTel" class="form-control" id="cusTel" placeholder="请输入客户电话" autocomplete="off">
                 </div>
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#queryByCusTel"
                         onclick="queryReservation()">查询预定信息
@@ -98,13 +98,13 @@
             <div class="modal-body">
                 <div class="modal-hyh">
                     <form action="/admin/editReservation" method="post" id="meForm">
-                        <input type="hidden" name="houseTypeId" id="houseTypeId"/>
-                        <input type="hidden" name="cusTel" /><br/>
+<%--                        <input type="hidden" name="houseTypeId" id="houseTypeId"/>--%>
+<%--                        <input type="hidden" name="cusTel" /><br/>--%>
                         <%--加载选中的户型名--%>
-                        房间名称：<input type="text" name="houseName" id="houseName" disabled="disabled"/>
-                        预定数量：<input type="number" name="reserHouseNumber" id="reserHouseNumber" value="1" disabled="disabled"/><br/>
-                        客户姓名：<input type="text" name="cusName" id="cusName" disabled="disabled"/>
-                        客户电话：<input type="text" name="cusTel" id="cusTelPhone" disabled="disabled"/><br>
+                        房间名称：<input type="text" name="houseName" id="houseName" readonly="readonly">
+                        预定数量：<input type="number" name="reserHouseNumber" id="reserHouseNumber" value="1" readonly="readonly"/><br/>
+                        客户姓名：<input type="text" name="cusName" id="cusName" readonly="readonly"/>
+                        客户电话：<input type="text" name="cusTel" id="cusTelPhone" readonly="readonly"/><br>
                         入住时间: <input type="text" name="inTime" class="span2" value="" id="dpd1">
                         离店时间: <input type="text" name="outTime" class="span2" value="" id="dpd2"><br>
                         <input type="button" class="btn btn-default" data-dismiss="modal" id="Unsubscribe"

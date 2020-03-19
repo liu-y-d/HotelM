@@ -15,16 +15,29 @@
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li><a href="/admin/toHouseInfoM">房型信息管理</a></li>
+				<li class="dropdown">
+					<a href="/admin/queryCustomerReservationInfo" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">预定信息管理
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="/admin/queryCustomerReservationInfoStatus0">在住用户</a></li>
+						<li><a href="/admin/queryCustomerReservationInfo">过期用户</a></li>
+					</ul>
+				</li>
+				<li><a href="/SalesStatistics">销量统计</a></li>
+				<li><a href="/FinanceStatistics">财务统计</a></li>
+			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="#">${adminInfo.adminName}</a></li>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-					   aria-expanded="false">设置 <span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">设置 <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="/admin/getAdminInfo">个人信息</a></li>
 
 						<li role="separator" class="divider"></li>
-						<li><a href="#">退出登录</a></li>
+						<li><a href="/admin/signOut">退出登录</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -34,7 +47,7 @@
 <div class="row" >
 	<c:forEach var="cusReserInfo" items="${customerReservationInfos}">
 		<div class="col-md-3" >
-			<div class="houseInfo"style="background-color: #5a84fd">
+			<div class="houseInfo">
 				<span>客户姓名：${cusReserInfo.cusName}</span>
 				<span>客户电话：${cusReserInfo.cusTel}</span>
 				<span>房型编号：${cusReserInfo.houseTypeId}</span>
