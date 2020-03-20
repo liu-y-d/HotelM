@@ -10,7 +10,7 @@
 	<div class="container-fluid">
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">
-			<a class="navbar-brand" href="/admin/toMain">测试酒店管理系统</a>
+			<a class="navbar-brand" href="/admin/toMain">小型酒店预订管理系统</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -24,10 +24,13 @@
 					<ul class="dropdown-menu">
 						<li><a href="/admin/queryCustomerReservationInfoStatus0">在住用户</a></li>
 						<li><a href="/admin/queryCustomerReservationInfo">过期用户</a></li>
+						<li><a href="/admin/queryCustomerReservationInfoStatus2">退订用户</a></li>
 					</ul>
 				</li>
 				<li><a href="/SalesStatistics">销量统计</a></li>
 				<li><a href="/FinanceStatistics">财务统计</a></li>
+				<li><a href="/druid">系统性能查询</a></li>
+
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="#">${adminInfo.adminName}</a></li>
@@ -55,12 +58,24 @@
 				<span>预定数量：${cusReserInfo.reserHouseNumber}</span>
 				<span>入住时间：${cusReserInfo.inTime}</span>
 				<span>离店时间：${cusReserInfo.outTime}</span>
-				<span>预订状态：${cusReserInfo.status == 0 ? '在住用户':'订单信息已失效'}</span>
+				<span>预订状态：
+					<c:if test="${cusReserInfo.status ==0}">
+						在住用户
+					</c:if>
+					<c:if test="${cusReserInfo.status ==1}">
+						过期用户
+					</c:if>
+					<c:if test="${cusReserInfo.status ==2}">
+						退订用户
+					</c:if>
+				</span>
 			</div>
 		</div>
 	</c:forEach>
 </div>
-
+<c:if test="${customerReservationInfos.size()==0}">
+	<h3 style="margin: 0 auto; text-align: center;margin-top: 100px">当前系统无在住用户信息！</h3>
+</c:if>
 <script type="text/javascript" src="/static/bootstrap-3.3.7-dist/js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 </body>

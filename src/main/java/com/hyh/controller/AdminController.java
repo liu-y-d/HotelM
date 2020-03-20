@@ -250,7 +250,7 @@ public class AdminController {
 	//管理员查看预定信息过期
 	@RequestMapping("/queryCustomerReservationInfo")
 	public String queryCustomerReservationInfo(Model model) {
-		List<CustomerReservationInfo> customerReservationInfos = adminDao.queryCustomerReservationInfo(0);
+		List<CustomerReservationInfo> customerReservationInfos = adminDao.queryCustomerReservationInfo(1);
 		model.addAttribute("customerReservationInfos", customerReservationInfos);
 		return "admin/CustomerReservationInfoM/customerReservationInfoPage";
 	}
@@ -258,6 +258,13 @@ public class AdminController {
 	@RequestMapping("/queryCustomerReservationInfoStatus0")
 	public String queryCustomerReservationInfoStatus0(Model model) {
 		List<CustomerReservationInfo> customerReservationInfos = adminDao.queryCustomerReservationInfoStatus0(0);
+		model.addAttribute("customerReservationInfos", customerReservationInfos);
+		return "admin/CustomerReservationInfoM/customerReservationInfoPage";
+	}
+	//在住用户
+	@RequestMapping("/queryCustomerReservationInfoStatus2")
+	public String queryCustomerReservationInfoStatus2(Model model) {
+		List<CustomerReservationInfo> customerReservationInfos = adminDao.queryCustomerReservationInfoStatus0(2);
 		model.addAttribute("customerReservationInfos", customerReservationInfos);
 		return "admin/CustomerReservationInfoM/customerReservationInfoPage";
 	}

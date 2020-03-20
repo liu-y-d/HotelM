@@ -32,7 +32,7 @@
 <section class="signin">
 	<div class="container">
 		<div class="sign-content">
-			<h2>测试酒店管理系统</h2>
+			<h2>小型酒店预订管理系统</h2>
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="signin-form">

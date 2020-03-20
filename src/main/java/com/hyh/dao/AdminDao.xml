@@ -55,9 +55,12 @@
 	</select>
 	<!--查找预定信息-->
 	<select id="queryCustomerReservationInfo" resultType="com.hyh.pojo.CustomerReservationInfo">
-		select customerreservationinfo.cusName,customerreservationinfo.cusTel,customerreservationinfo.houseTypeId,customerreservationinfo.reserHouseNumber,hotelInfo.houseName,customerreservationinfo.inTime,customerreservationinfo.outTime,customerreservationinfo.status from customerreservationinfo join hotelInfo on customerreservationinfo.houseTypeId = hotelInfo.houseTypeId where customerreservationinfo.status != #{status}
+		select customerreservationinfo.cusName,customerreservationinfo.cusTel,customerreservationinfo.houseTypeId,customerreservationinfo.reserHouseNumber,hotelInfo.houseName,customerreservationinfo.inTime,customerreservationinfo.outTime,customerreservationinfo.status from customerreservationinfo join hotelInfo on customerreservationinfo.houseTypeId = hotelInfo.houseTypeId where customerreservationinfo.status = #{status}
 	</select>
 	<select id="queryCustomerReservationInfoStatus0" resultType="com.hyh.pojo.CustomerReservationInfo">
+		select customerreservationinfo.cusName,customerreservationinfo.cusTel,customerreservationinfo.houseTypeId,customerreservationinfo.reserHouseNumber,hotelInfo.houseName,customerreservationinfo.inTime,customerreservationinfo.outTime,customerreservationinfo.status from customerreservationinfo join hotelInfo on customerreservationinfo.houseTypeId = hotelInfo.houseTypeId where customerreservationinfo.status = #{status}
+	</select>
+	<select id="queryCustomerReservationInfoStatus2" resultType="com.hyh.pojo.CustomerReservationInfo">
 		select customerreservationinfo.cusName,customerreservationinfo.cusTel,customerreservationinfo.houseTypeId,customerreservationinfo.reserHouseNumber,hotelInfo.houseName,customerreservationinfo.inTime,customerreservationinfo.outTime,customerreservationinfo.status from customerreservationinfo join hotelInfo on customerreservationinfo.houseTypeId = hotelInfo.houseTypeId where customerreservationinfo.status = #{status}
 	</select>
 	<!--删除预订信息-->

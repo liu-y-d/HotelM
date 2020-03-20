@@ -24,7 +24,7 @@
 	<div class="container-fluid">
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">
-			<a class="navbar-brand" href="#">${hotelName}</a>
+			<a class="navbar-brand" href="/admin/reservationPage">小型酒店预订管理系统</a>
 		</div>
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->

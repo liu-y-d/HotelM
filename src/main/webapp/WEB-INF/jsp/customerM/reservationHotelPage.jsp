@@ -14,7 +14,7 @@
 	<div class="container-fluid">
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">
-			<a class="navbar-brand" href="/admin/reservationPage">${hotelName}</a>
+			<a class="navbar-brand" href="/admin/reservationPage">小型酒店预订管理系统</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->

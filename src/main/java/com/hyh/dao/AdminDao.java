@@ -41,6 +41,7 @@ public interface AdminDao {
     List<CustomerReservationInfo> queryByHouseById(@Param("houseTypeId") Integer houseTypeId);
     //查找预定信息
     List<CustomerReservationInfo> queryCustomerReservationInfoStatus0(@Param("status")Integer status);
+    List<CustomerReservationInfo> queryCustomerReservationInfoStatus2(@Param("status")Integer status);
     List<CustomerReservationInfo> queryCustomerReservationInfo(@Param("status")Integer status);
 
     //删除订单信息

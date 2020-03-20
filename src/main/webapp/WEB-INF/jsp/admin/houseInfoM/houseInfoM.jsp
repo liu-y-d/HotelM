@@ -13,7 +13,7 @@
 	<div class="container-fluid">
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">
-			<a class="navbar-brand" href="/admin/toMain">测试酒店管理系统</a>
+			<a class="navbar-brand" href="/admin/toMain">小型酒店预订管理系统</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -27,10 +27,14 @@
 					<ul class="dropdown-menu">
 						<li><a href="/admin/queryCustomerReservationInfoStatus0">在住用户</a></li>
 						<li><a href="/admin/queryCustomerReservationInfo">过期用户</a></li>
+						<li><a href="/admin/queryCustomerReservationInfoStatus2">退订用户</a></li>
+
 					</ul>
 				</li>
 				<li><a href="/SalesStatistics">销量统计</a></li>
 				<li><a href="/FinanceStatistics">财务统计</a></li>
+				<li><a href="/druid">系统性能查询</a></li>
+
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="#">${adminInfo.adminName}</a></li>
@@ -47,7 +51,8 @@
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
 </nav>
-
+<input type="button" class="btn btn-success" style="margin: 20px" value="添加房间信息" data-toggle="modal" data-target="#editHouseInfo"
+	   onclick="editFunction(${hotelInfo.houseTypeId})">
 <div class="row">
 	<c:forEach var="hotelInfo" items="${hotelInfos}">
 		<div class="col-md-3 ">
