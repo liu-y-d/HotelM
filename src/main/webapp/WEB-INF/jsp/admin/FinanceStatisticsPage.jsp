@@ -30,7 +30,7 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="/admin/queryCustomerReservationInfoStatus0">在住用户</a></li>
+                        <li><a href="/admin/queryCustomerReservationInfoStatus0">有效用户</a></li>
                         <li><a href="/admin/queryCustomerReservationInfo">过期用户</a></li>
                         <li><a href="/admin/queryCustomerReservationInfoStatus2">退订用户</a></li>
                     </ul>
